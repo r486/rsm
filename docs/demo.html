@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>rsm</title>
+</head>
+<body>
+    <pre>
+        available in the console
+            Store
+            Events
+    </pre>
+
+<script>
+
+    (()=>{"use strict";window.Store=class{constructor(t){for(const s in t)this.__data[s]=t[s],this.__subs[s]=[]}__data=Object.create(null);__subs=Object.create(null);get(t){return this.__ensurePropsExist(t),this.__data[t]}getx(...t){t.length&&this.__ensurePropsExist(...t);const s=Object.create(null);for(const _ of t.length?t:Object.keys(this.__data))s[_]=this.__data[_];return s}set(t,s){this.__ensurePropsExist(t);const _=this.__data[t];this.__data[t]=s;for(const s of this.__subs[t])s(this.__data[t],_)}setx(t){this.__ensurePropsExist(...Object.keys(t));const s=Object.create(null);for(const _ in t)s[_]=this.__data[_],this.__data[_]=t[_];for(const _ in t)for(const t of this.__subs[_])t(this.__data[_],s[_])}alt(t,s){this.__ensurePropsExist(t);const _=this.__data[t];this.__data[t]=s(this.__data[t]);for(const s of this.__subs[t])s(this.__data[t],_)}sub(t,s){if(this.__ensurePropsExist(t),this.__subs[t].includes(s))throw new Error("the handler is already attached to the property");this.__subs[t].push(s)}unsub(t,s){if(this.__ensurePropsExist(t),!this.__subs[t].includes(s))throw new Error("the handler not attached to the property");this.__subs[t].splice(this.__subs[t].indexOf(s),1)}__ensurePropsExist(...t){const s=[];for(const _ of t)Object.prototype.hasOwnProperty.call(this.__data,_)||s.push(`"${_}"`);if(s.length)throw new Error(`no such propert${s.length>1?"ies":"y"}: ${s.join(", ")}`)}}})();
+
+    (()=>{"use strict";window.Events=class{constructor(...e){for(const t of e)this.__events[t]=[]}__events=Object.create(null);emit(e,t){if(!this.__events[e])throw new Error(`no such event: ${e}`);for(const s of this.__events[e])s(t)}listen(e,t){if(!this.__events[e])throw new Error(`no such event: ${e}`);if(this.__events[e].includes(t))throw new Error("the handler is already attached to the event");this.__events[e].push(t)}unlisten(e,t){if(!this.__events[e])throw new Error(`no such event: ${e}`);if(!this.__events[e].includes(t))throw new Error("the handler is not attached to the event");this.__events[e].splice(this.__events[e].indexOf(t),1)}}})();
+
+</script>
+</body>
+</html>
